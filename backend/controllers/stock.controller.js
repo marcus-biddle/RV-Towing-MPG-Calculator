@@ -85,7 +85,7 @@ export const stockNews = async (req, res) => {
 
     console.log("Headlines:", headlines);
 
-    const llmResponse = await axios.post("http://127.0.0.1:8001/summarize", { headlines });
+    const llmResponse = await axios.post("https://stock-tracker-llm.onrender.com/summarize", { headlines });
     console.log("LLM response:", llmResponse.data);
 
     let summary = llmResponse.data?.summary || "";

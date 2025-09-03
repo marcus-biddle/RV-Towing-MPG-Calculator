@@ -191,6 +191,14 @@ const handleSelectedStock = async (stockName: string) => {
                   <>
                       {stock.marketNews ? 
                       <div className="bg-gradient-to-br from-purple-900/40 to-pink-900/40 backdrop-blur-sm rounded-xl p-6 border border-purple-500/20">
+                        <div className="flex items-center justify-between mb-4">
+                          <h4 className="font-bold text-white flex items-center">
+                            <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mr-3">
+                              <span className="text-white text-sm">🤖</span>
+                            </div>
+                            AI Market Summary
+                          </h4>
+                        </div>
                         {stock.marketNews.aisummary}
                       </div> : <></>}
                   </>
