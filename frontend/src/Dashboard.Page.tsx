@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { searchStocks } from '../api/stock.js'
 import { type StockSearchResult } from '../types/index.ts'
 import { Search, Plus, X, ExternalLink, TrendingUp, Clock, Star, AlertCircle } from 'lucide-react';
@@ -11,6 +11,7 @@ const StockNewsDashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<StockSearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
 
   const handleSearch = async (query: string) => {
   setSearchQuery(query);
@@ -31,10 +32,10 @@ const StockNewsDashboard = () => {
 };
 
 const handleSelectedStock = async (stockName: string) => {
-  await addToWatchlist(stockName);
-      
-  setSearchQuery("");
+  setSearchQuery(stockName);
   setSearchResults([]);
+  setIsAdding(true);
+  await addToWatchlist(stockName);
 }
 
 
@@ -52,6 +53,17 @@ const handleSelectedStock = async (stockName: string) => {
     if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
     return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
   };
+
+  useEffect(() => {
+    if (isAdding) {
+      const existing = user?.watchlist.some(stock => stock.ticker === searchQuery);
+
+      if (existing) {
+        setSearchQuery("");
+        setIsAdding(false);
+      }
+    }
+  }, [user])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black">
@@ -84,9 +96,13 @@ const handleSelectedStock = async (stockName: string) => {
           <div className="bg-gray-900/60 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-800 p-8">
             <h2 className="text-xl font-bold text-white mb-6 flex items-center">
               <div className="w-2 h-6 bg-gradient-to-b from-purple-400 to-pink-400 rounded-full mr-3"></div>
-              Add Stock to Watchlist
+              {(user && user?.watchlist.length >= 4) ? 'Delete a Stock to Add More': isAdding ? `Adding ${searchQuery} to Watchlist` : 'Add Stock to Watchlist'}
             </h2>
-            <div className="relative">
+            {isAdding && <div className="mt-6 text-center text-gray-300">
+                <div className="inline-block animate-spin rounded-full h-5 w-5 border-b-2 border-purple-500"></div>
+                <span className="ml-3 font-medium">Searching...</span>
+              </div>}
+            {!isAdding || (user && user?.watchlist.length >= 4) ? <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                 <Search className="h-5 w-5 text-gray-400" />
               </div>
@@ -98,7 +114,7 @@ const handleSelectedStock = async (stockName: string) => {
                 onChange={(e) => handleSearch(e.target.value)}
                 className="block w-full pl-12 pr-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl leading-5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
               />
-            </div>
+            </div> : <></>}
 
             {/* Search Results */}
             {searchResults.length > 0 && (
