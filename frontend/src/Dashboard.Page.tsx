@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import {getStockNews, getStockQuote, searchStock, searchStocks} from '../api/stock.js'
-import { type StockNews, type StockProfile, type StockQuote, type StockSearchResult, type WatchlistItem } from '../types/index.ts'
+import { useState } from 'react';
+import { searchStocks } from '../api/stock.js'
+import { type StockSearchResult } from '../types/index.ts'
 import { Search, Plus, X, ExternalLink, TrendingUp, Clock, Star, AlertCircle } from 'lucide-react';
 import { useUserProfile } from '../hooks/useUserProfile.ts'
 
@@ -8,15 +8,9 @@ import { useUserProfile } from '../hooks/useUserProfile.ts'
 const StockNewsDashboard = () => {
   const { addToWatchlist, user, removeFromWatchlist } = useUserProfile();
 
-  const [tickerList, setTickerList] = useState<WatchlistItem[]>([]);
-  const [watchList, setWatcList] = useState([]);
-  const [watchlist, setWatchlist] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<StockSearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
-  const [selectedStock, setSelectedStock] = useState(null);
-  const [newsData, setNewsData] = useState({});
-  const [isLoadingNews, setIsLoadingNews] = useState(false);
 
   const handleSearch = async (query: string) => {
   setSearchQuery(query);
@@ -58,25 +52,6 @@ const handleSelectedStock = async (stockName: string) => {
     if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
     return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
   };
-
-
-  const getSentimentColor = (sentiment) => {
-    switch (sentiment) {
-      case 'positive': return 'text-green-600 bg-green-50';
-      case 'negative': return 'text-red-600 bg-red-50';
-      default: return 'text-gray-600 bg-gray-50';
-    }
-  };
-
-  const getSentimentIcon = (sentiment) => {
-    switch (sentiment) {
-      case 'positive': return '📈';
-      case 'negative': return '📉';
-      default: return '📊';
-    }
-  };
-
-  console.log(tickerList)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black">
@@ -251,7 +226,7 @@ const handleSelectedStock = async (stockName: string) => {
                       </div>
                     ) : (
                       <div className="text-center py-12">
-                        {isLoadingNews ? (
+                        {stock.marketNews ? (
                           <div>
                             <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500 mb-4"></div>
                             <p className="text-sm text-gray-400 font-medium">Loading news...</p>

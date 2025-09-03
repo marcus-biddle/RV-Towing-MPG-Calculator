@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { type UserProfile, type WatchlistItem, type StockNews, type StockProfile, type StockQuote, type StockSearchResult } from '../types/index.ts'
+import { type UserProfile, type WatchlistItem, type StockNews, type StockProfile, type StockQuote } from '../types/index.ts'
 import { getStockQuote, getStockNews, searchStock } from "../api/stock.ts";
 
 const USER_PROFILE_KEY = "user_profile";
