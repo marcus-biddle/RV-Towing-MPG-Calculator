@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { type UserProfile, type WatchlistItem, type StockNews, type StockProfile, type StockQuote } from '../types/index.ts'
+import { type UserProfile, type WatchlistItem, type StockProfile, type StockQuote, type StockNewsResponse } from '../types/index.ts'
 import { getStockQuote, getStockNews, searchStock } from "../api/stock.ts";
 
 const USER_PROFILE_KEY = "user_profile";
@@ -42,7 +42,7 @@ export const useUserProfile = () => {
       const quote: StockQuote = await getStockQuote(ticker);
 
       // 3. Get recent news
-      const news: StockNews[] = await getStockNews(ticker);
+      const news: StockNewsResponse = await getStockNews(ticker);
 
       // 4. Construct watchlist item
       const newItem: WatchlistItem = {

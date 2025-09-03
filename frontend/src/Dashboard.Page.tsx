@@ -94,6 +94,7 @@ const handleSelectedStock = async (stockName: string) => {
                 type="text"
                 placeholder="Search by symbol (AAPL) or company name (Apple)"
                 value={searchQuery}
+                disabled={user && user?.watchlist.length > 4 ? true : false}
                 onChange={(e) => handleSearch(e.target.value)}
                 className="block w-full pl-12 pr-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl leading-5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
               />
@@ -187,6 +188,13 @@ const handleSelectedStock = async (stockName: string) => {
                     </div>
                   </div>
 
+                  <>
+                      {stock.marketNews ? 
+                      <div className="bg-gradient-to-br from-purple-900/40 to-pink-900/40 backdrop-blur-sm rounded-xl p-6 border border-purple-500/20">
+                        {stock.marketNews.aisummary}
+                      </div> : <></>}
+                  </>
+
 
                   {/* News Section */}
                   <div className="p-8">
@@ -196,7 +204,7 @@ const handleSelectedStock = async (stockName: string) => {
                     </h4>
                     {stock.marketNews ? (
                       <div className="space-y-6">
-                        {stock.marketNews.slice(0, 3).map((article) => (
+                        {stock.marketNews.news.map((article) => (
                           <div key={article.id} className="group/article">
                             <div className="flex items-start space-x-4">
                               {/* <div className={`px-3 py-1 rounded-full text-xs font-bold shadow-lg ${getSentimentColor(article.sentiment).replace('text-', 'text-').replace('bg-', 'bg-').replace('50', '500/20').replace('600', '400')}`}>

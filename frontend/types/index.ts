@@ -40,9 +40,15 @@ export interface StockNews {
   image: string;
   related: string;    // ticker symbol(s)
   source: string;
-  summary: string;
+  summary: string;    // Original summary from Finnhub
   url: string;
 }
+
+export interface StockNewsResponse {
+  news: StockNews[]; // Array of Finnhub news items
+  aisummary: string;   // Combined AI-generated summary for all headlines
+}
+
 
 export interface WatchlistItem {
   ticker: string;
@@ -63,7 +69,7 @@ export interface WatchlistItem {
     prevClose: number;
     timestamp: number;
   };
-  marketNews: StockNews[]
+  marketNews: StockNewsResponse
 }
 
 export interface UserProfile {

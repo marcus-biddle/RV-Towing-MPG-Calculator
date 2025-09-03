@@ -1,5 +1,5 @@
-import { type StockNews, type StockProfile, type StockQuote, type StockSearchResult } from '../types/index.ts'
-const BASE_URL = "https://stock-tracker-vbdy.onrender.com";
+import { type StockNewsResponse, type StockProfile, type StockQuote, type StockSearchResult } from '../types/index.ts'
+const BASE_URL = "https://stock-tracker-vbdy.onrender.com"; //https://stock-tracker-vbdy.onrender.com
 
 /**
  * Search for a stock by symbol
@@ -43,13 +43,13 @@ export const getStockQuote = async (symbol: string): Promise<StockQuote> => {
 /**
  * Search for a stock news for last month
  */
-export const getStockNews = async (symbol: string): Promise<StockNews[]> => {
+export const getStockNews = async (symbol: string): Promise<StockNewsResponse> => {
     const res = await fetch(`${BASE_URL}/api/stocks/news?stock=${symbol}`);
     try {
         const data = await res.json();
 
-        console.log(symbol, data.response)
-        return data.response;
+        console.log(symbol, data)
+        return data;
     } catch(e) {
         throw new Error(`HTTP error! status: ${res.status, e}`);
     }
