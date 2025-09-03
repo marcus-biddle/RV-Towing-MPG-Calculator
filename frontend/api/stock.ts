@@ -1,5 +1,5 @@
 import { type StockNews, type StockProfile, type StockQuote, type StockSearchResult } from '../types/index.ts'
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "https://stock-tracker-vbdy.onrender.com";
 
 /**
  * Search for a stock by symbol
