@@ -94,8 +94,8 @@ export const stockNews = async (req, res) => {
 
     res.json({
       success: true,
-      news: marketNews,
-      aisummary: summary,
+      news: marketNews || [],
+      aisummary: summary || '',
     });
   } catch (error) {
     console.error(error.message || error);
